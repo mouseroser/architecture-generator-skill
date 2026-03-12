@@ -1,0 +1,91 @@
+{
+  "name": "standard",
+  "version": "2.6",
+  "description": "标准架构，推荐使用",
+  "agents": [
+    "main",
+    "coding",
+    "review",
+    "test",
+    "gemini",
+    "notebooklm",
+    "brainstorming",
+    "docs",
+    "wemedia",
+    "nano-banana",
+    "monitor-bot",
+    "claude",
+    "openai"
+  ],
+  "memory": {
+    "layers": 3,
+    "auto_capture": true,
+    "auto_compress": true,
+    "auto_sync": true
+  },
+  "cron_tasks": [
+    {
+      "name": "layer2-health-check",
+      "schedule": "0 2 * * *",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "memory-quality-audit",
+      "schedule": "0 3 * * *",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "daily-memory-report",
+      "schedule": "0 5 * * *",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "low"
+    },
+    {
+      "name": "layer1-compress-check",
+      "schedule": "0 4 * * 0",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "MEMORY.md 维护",
+      "schedule": "0 22 * * 0",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "medium"
+    },
+    {
+      "name": "memory-archive-weekly-sync",
+      "schedule": "0 23 * * 0",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "medium"
+    }
+  ],
+  "scripts": [
+    "layer1-compress-check.sh",
+    "layer2-health-check.sh"
+  ],
+  "shared_context": true,
+  "intel": true,
+  "files": {
+    "root": [
+      "SOUL.md",
+      "IDENTITY.md",
+      "AGENTS.md",
+      "USER.md",
+      "MEMORY.md",
+      "HEARTBEAT.md",
+      "TOOLS.md",
+      "MEMORY-ARCHITECTURE.md"
+    ],
+    "shared_context": [
+      "THESIS.md",
+      "FEEDBACK-LOG.md",
+      "SIGNALS.md"
+    ],
+    "intel": [
+      "DAILY-INTEL.md"
+    ],
+    "memory": ["YYYY-MM-DD.md"]
+  }
+}

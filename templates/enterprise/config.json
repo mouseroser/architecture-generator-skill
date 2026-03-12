@@ -1,0 +1,129 @@
+{
+  "name": "enterprise",
+  "version": "2.6",
+  "description": "企业架构，适合团队使用",
+  "agents": [
+    "main",
+    "coding",
+    "review",
+    "test",
+    "gemini",
+    "notebooklm",
+    "brainstorming",
+    "docs",
+    "wemedia",
+    "nano-banana",
+    "monitor-bot",
+    "claude",
+    "openai",
+    "analytics",
+    "security",
+    "performance",
+    "deployment",
+    "backup",
+    "notification",
+    "scheduler",
+    "logger"
+  ],
+  "memory": {
+    "layers": 3,
+    "auto_capture": true,
+    "auto_compress": true,
+    "auto_sync": true,
+    "advanced_features": true
+  },
+  "cron_tasks": [
+    {
+      "name": "layer2-health-check",
+      "schedule": "0 2 * * *",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "memory-quality-audit",
+      "schedule": "0 3 * * *",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "daily-memory-report",
+      "schedule": "0 5 * * *",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "low"
+    },
+    {
+      "name": "layer1-compress-check",
+      "schedule": "0 4 * * 0",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "MEMORY.md 维护",
+      "schedule": "0 22 * * 0",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "medium"
+    },
+    {
+      "name": "memory-archive-weekly-sync",
+      "schedule": "0 23 * * 0",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "medium"
+    },
+    {
+      "name": "security-audit",
+      "schedule": "0 1 * * 1",
+      "model": "anthropic/claude-opus-4-6",
+      "thinking": "high"
+    },
+    {
+      "name": "performance-check",
+      "schedule": "0 6 * * *",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "backup-check",
+      "schedule": "0 0 * * *",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    },
+    {
+      "name": "deployment-check",
+      "schedule": "0 7 * * 1",
+      "model": "minimax/MiniMax-M2.5",
+      "thinking": "low"
+    }
+  ],
+  "scripts": [
+    "layer1-compress-check.sh",
+    "layer2-health-check.sh",
+    "security-audit.sh",
+    "performance-check.sh",
+    "backup-check.sh"
+  ],
+  "shared_context": true,
+  "intel": true,
+  "monitoring": true,
+  "alerting": true,
+  "files": {
+    "root": [
+      "SOUL.md",
+      "IDENTITY.md",
+      "AGENTS.md",
+      "USER.md",
+      "MEMORY.md",
+      "HEARTBEAT.md",
+      "TOOLS.md",
+      "MEMORY-ARCHITECTURE.md"
+    ],
+    "shared_context": [
+      "THESIS.md",
+      "FEEDBACK-LOG.md",
+      "SIGNALS.md"
+    ],
+    "intel": [
+      "DAILY-INTEL.md"
+    ],
+    "memory": ["YYYY-MM-DD.md"]
+  }
+}
