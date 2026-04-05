@@ -1,345 +1,119 @@
 # Architecture Specification
 
-OpenClaw 完整架构规范（v2.6）。
+OpenClaw 完整架构规范（2026-04-05 更新）。
 
 ---
 
-## 目录结构
+## 一句话总纲
 
-```
+- **main**：人类协作入口 + 主会话编排
+- **文件语义固定，文件数量可增长**
+- **主语清晰 > 文件数量少**
+
+---
+
+## 目录结构（通用架构）
+
+```text
 ~/.openclaw/workspace/
-├── SOUL.md                    # Main agent 人格定义
-├── IDENTITY.md                # Main agent 快速参考
-├── AGENTS.md                  # 根级行为规则（所有 agent 继承）
-├── USER.md                    # 关于用户
-├── MEMORY.md                  # Main agent 长期记忆
-├── HEARTBEAT.md               # 自愈检查清单
-├── TOOLS.md                   # 工具配置和本地笔记
-├── MEMORY-ARCHITECTURE.md     # 记忆架构说明
+├── SOUL.md
+├── IDENTITY.md
+├── AGENTS.md
+├── USER.md
+├── MEMORY.md
+├── HEARTBEAT.md
+├── TOOLS.md
+├── README.md
 ├── shared-context/
-│   ├── THESIS.md              # 当前世界观和关注点
-│   ├── FEEDBACK-LOG.md        # 跨 agent 纠正日志
-│   └── SIGNALS.md             # 追踪的趋势与信号
+│   ├── THESIS.md
+│   ├── FEEDBACK-LOG.md
+│   ├── PATHS.md
+│   └── SIGNALS.md
 ├── intel/
-│   ├── DAILY-INTEL.md         # 每日情报（gemini/notebooklm 写入）
-│   └── collaboration/         # 多 agent 协作材料
+│   └── collaboration/
 ├── agents/
-│   ├── coding/
-│   │   ├── SOUL.md
-│   │   ├── IDENTITY.md
-│   │   └── HEARTBEAT.md
-│   ├── review/
-│   │   ├── SOUL.md
-│   │   ├── IDENTITY.md
-│   │   └── HEARTBEAT.md
-│   ├── test/
-│   ├── gemini/
-│   ├── notebooklm/
-│   ├── brainstorming/
-│   ├── docs/
-│   ├── wemedia/
-│   ├── nano-banana/
-│   ├── monitor-bot/
-│   ├── claude/
-│   └── openai/
-├── memory/
-│   ├── YYYY-MM-DD.md          # 每日操作日志
-│   ├── YYYY-MM-DD-daily.md    # 结构化日志
-│   └── archive/               # 归档目录
-├── scripts/
-│   ├── layer1-compress-check.sh
-│   └── layer2-health-check.sh
-└── skills/
-    ├── agent-config-generator/
-    ├── memory-architecture-manager/
-    └── architecture-generator/
+│   └── <agent-name>/
+└── memory/
+    ├── YYYY-MM-DD.md
+    ├── topics/
+    └── archive/
 ```
 
 ---
 
-## 文件规范
+## 文件职责
 
-### 根级文件
+- `IDENTITY.md`：名片
+- `SOUL.md`：人格与边界
+- `USER.md`：服务对象合同
+- `AGENTS.md`：执行手册
+- `HEARTBEAT.md`：值班清单
+- `TOOLS.md`：环境坑位
+- `MEMORY.md`：长期伤疤与护栏
+- `memory/YYYY-MM-DD.md`：当天账本与晋升池
 
-#### SOUL.md
-**用途**: Main agent 的人格定义
+### 关键原则
+- sub-agent 可以从最小骨架启动
+- 但不能被永久锁死在三件套
+- 文件增长由真实使用驱动
+- 优化只做主语纠偏、内容瘦身、结构整理
+- 不做 blanket trimming
 
-**必须包含**:
-- 核心身份
-- 核心原则
-- 边界
-- 语气风格
-- 执行风格
-- 持续性
+---
 
-**示例**:
-```markdown
-# SOUL.md - 小光是谁
+## 主 Agent 职责
 
-## 核心身份
-小光 — 晨星的 AI 伙伴。阳光、开朗、乐于助人。
+### main
+负责：
+- 人类协作入口
+- 主会话编排
+- 可靠通知 owner
 
-## 核心原则
-- 真诚帮助，不做表演
-- 有自己的观点
-- 先尝试解决，再寻求帮助
-- 用能力赢得信任
-- 记住你是客人
+不负责：
+- routine heartbeat（由 HEARTBEAT.md 定义）
+- routine cron 宿主（由各 agent 自行管理）
 
-## 边界
-- 私密的事保持私密
-- 有疑问时，外部操作前先问
-- 永远不要发送半成品回复
-```
+---
 
-#### IDENTITY.md
-**用途**: Main agent 的快速参考卡
+## intel 分层
 
-**必须包含**:
-- 名字
-- 角色
-- 气质
-- Emoji
-- 灵感来源
-- 快速参考（原则、风格、不做）
-
-#### AGENTS.md
-**用途**: 根级行为规则，所有 agent 继承
-
-**必须包含**:
-- Every Session 规则
+### `intel/collaboration/`
+- 协作产物目录
+- 按业务线组织（如 starchain / stareval / media）
 - 单写者原则
-- Agent 协作规则
-- 代码修改硬性限制
-- 记忆管理规则
-- 流水线编排规则
-
-#### USER.md
-**用途**: 关于用户的信息
-
-**必须包含**:
-- 名字
-- 称呼
-- 代词
-- 时区
-- 主要通讯渠道
-- 沟通偏好
-- 工作习惯
-
-#### MEMORY.md
-**用途**: Main agent 的长期记忆
-
-**必须包含**:
-- 血泪教训（永不重犯）
-- 错误示范（不要这样做）
-- 核心偏好
-- 配置信息
-- 踩坑笔记
-
-#### HEARTBEAT.md
-**用途**: 自愈检查清单
-
-**必须包含**:
-- 健康检查项
-- 检查命令
-- 故障恢复流程
-- 原则
-
-#### TOOLS.md
-**用途**: 工具配置和本地笔记
-
-**必须包含**:
-- 环境特定配置
-- 设备昵称
-- SSH 主机
-- 首选设置
-
-#### MEMORY-ARCHITECTURE.md
-**用途**: 记忆架构说明
-
-**必须包含**:
-- 三层架构概览
-- 层级映射关系
-- 使用场景
-- 维护计划
 
 ---
 
-### shared-context/
+## MEMORY.md 规范
 
-#### THESIS.md
-**用途**: 当前世界观和关注点
+main 与 sub-agent 统一骨架：
+1. 血泪教训
+2. 错误示范 / 反模式
+3. 长期稳定规则
+4. 长期偏好（可选）
 
-**必须包含**:
-- 我当前关注什么
-- 我已经写了什么
-- 还有哪些空白
-- 下一步计划
+### 写入门槛
+至少满足以下 3 条才进 MEMORY.md：
+- 高代价
+- 可复发
+- 已验证
+- 长期有效
+- 不写进去以后大概率还会再犯
 
-#### FEEDBACK-LOG.md
-**用途**: 跨 agent 纠正日志
-
-**必须包含**:
-- 纠正日志（问题、影响、纠正、状态）
-- 通用原则
-
-#### SIGNALS.md
-**用途**: 追踪的趋势与信号
-
-**必须包含**:
-- 技术趋势
-- 行业动态
-- 个人兴趣
-- 当前热点
-- 避免的话题
+### 分工
+- root `MEMORY.md`：系统级、跨 agent、长期护栏
+- sub-agent `MEMORY.md`：agent-specific 的高代价长期伤疏
 
 ---
 
-### intel/
+## 架构变更收口规则
 
-#### DAILY-INTEL.md
-**用途**: 每日情报
-
-**写者**: gemini/notebooklm
-**读者**: 所有 agent
-
-#### collaboration/
-**用途**: 多 agent 协作材料
-
-**规则**: 单写者原则，任务发起者写入，参与者读取
+重大架构调整后：
+1. 写入 `master-execution-plan.md`
+2. 至少运行观察 2-3 天
+3. 只根据真实使用反馈决定下一轮小修
+4. 不在同一天连续做多轮结构手术
 
 ---
 
-### agents/
-
-每个 agent 必须有：
-- `SOUL.md` - 人格定义
-- `IDENTITY.md` - 快速参考
-- `HEARTBEAT.md` - 健康检查
-
-**标准 agent 列表**:
-1. coding - 代码实现者
-2. review - 审查执行者
-3. test - 测试执行者
-4. gemini - 快速扫描者
-5. notebooklm - 知识补料者
-6. brainstorming - 根因分析者
-7. docs - 文档交付者
-8. wemedia - 内容创作者
-9. nano-banana - 视觉创作者
-10. monitor-bot - 系统守望者
-11. claude - 主方案设计者
-12. openai - 宪法制定者
-
----
-
-### memory/
-
-#### YYYY-MM-DD.md
-**用途**: 每日操作日志
-
-**格式**:
-```markdown
-# YYYY-MM-DD
-
-## 今日重点
-## 完成的任务
-## 学到的经验
-## 待办事项
-```
-
-#### archive/
-**用途**: 归档超过 40k tokens 的日志
-
----
-
-### scripts/
-
-#### layer1-compress-check.sh
-**用途**: 压缩超过阈值的每日日志
-
-**功能**:
-- 扫描 memory/YYYY-MM-DD.md
-- 压缩超过 40k tokens 的文件
-- 归档到 memory/archive/
-
-#### layer2-health-check.sh
-**用途**: 检查 memory-lancedb-pro 健康状态
-
-**功能**:
-- 检查向量数据库
-- 检查 rerank sidecar
-- 检查自动捕获
-- 生成健康评分
-
----
-
-## Cron 任务规范
-
-### 必须创建的 Cron 任务
-
-1. **layer2-health-check**
-   - 时间: 每天 02:00
-   - 模型: minimax
-   - 超时: 300 秒
-
-2. **memory-quality-audit**
-   - 时间: 每天 03:00
-   - 模型: minimax
-   - 超时: 300 秒
-
-3. **daily-memory-report**
-   - 时间: 每天 05:00
-   - 模型: opus
-   - 超时: 1200 秒
-
-4. **layer1-compress-check**
-   - 时间: 每周日 04:00
-   - 模型: minimax
-   - 超时: 300 秒
-
-5. **MEMORY.md 维护**
-   - 时间: 每周日 22:00
-   - 模型: opus
-   - 超时: 600 秒
-
-6. **memory-archive-weekly-sync**
-   - 时间: 每周日 23:00
-   - 模型: opus
-   - 超时: 600 秒
-
----
-
-## 单写者原则
-
-### 文件所有权映射
-
-| 文件/目录 | 写者 | 读者 |
-|-----------|------|------|
-| 根级文件 | main | main |
-| shared-context/ | main | all agents |
-| intel/DAILY-INTEL.md | gemini/notebooklm | all agents |
-| intel/collaboration/ | 任务发起者 | 参与者 |
-| agents/<agent-id>/ | 对应 agent | 对应 agent |
-| memory/ | main | all agents |
-
----
-
-## 架构版本
-
-### v2.6（当前版本）
-- Review agent 不再编排其他 agent
-- Main agent 直接编排所有 agent
-- 统一推送规范
-- 三层记忆架构
-
-### v2.5
-- Review agent 编排 coding/test/gemini
-- 基础推送规范
-- 两层记忆架构
-
----
-
-**最后更新**: 2026-03-12 16:11
-**维护者**: main (小光)
-**版本**: v2.6
+**最后更新**: 2026-04-05
