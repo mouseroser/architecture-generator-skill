@@ -131,8 +131,8 @@ bash ~/.openclaw/skills/agent-config-generator/scripts/generate-agent-config.sh 
 ## 安装
 
 ```bash
-git clone https://github.com/win4r/architecture-generator.git
-openclaw plugins install --link ./architecture-generator
+git clone https://github.com/mouseroser/architecture-generator-skill.git
+openclaw plugins install --link ./architecture-generator-skill
 ```
 
 ---
