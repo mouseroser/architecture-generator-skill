@@ -1,6 +1,34 @@
 # Architecture Generator
 
-基于 `WORKSPACE-BLUEPRINT.md` 重构和验证 OpenClaw workspace 工作区结构。
+[![GitHub](https://img.shields.io/badge/GitHub-mouseroser-blue?logo=github)](https://github.com/mousenerator-skill)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![OpenClaw](https://img.shields.io/badge/OpenClaw-Skill-orange.svg)](https://openclaw.ai)
+
+基于 `WORKSPACE-BLUEPRINT.md` 优化 OpenClaw workspace 工作区结构的主入口工具。
+
+## ✨ 特性
+
+- 🔍 **自动验证** - 检查 workspace 是否符合 Blueprint 规范
+- 🔧 **智能修复** - 自动补全缺失文件和目录
+- 📦 **Agent 管理** - 自动识别和修复 agent 位置
+- 🔌 **插件检测** - 检测 Layer 2 插件安装状态
+- 🎯 **一键优化** - 综合优化 workspace 结构
+
+## 🚀 快速开始
+
+### 安装
+
+```bash
+cd ~/.openclaw/skills
+git clone https://github.com/mouseroser/architecture-generator-skill.git architecture-generator
+```
+
+### 使用
+
+```bash
+# 一键优化（推荐）
+bash ~/.openclaw/skills/architecture-generator/scripts/optimize-workspace.sh
+```
 
 ## 核心功能
 
@@ -139,4 +167,27 @@ git clone https://github.com/mouseroser/architecture-generator-skill.git archite
 
 ---
 
-**最后更新**: 2026-04-05
+## 📝 更新日志
+
+### 2026-04-11
+- 修复 YAML 警告：使用中文冒号避免 alias 语法冲突
+- 优化 README 文档
+- 添加徽章和快速开始指南
+
+### 2026-04-05
+- 初始版本发布
+
+---
+
+## 📄 License
+
+MIT License - 详见 [LICENSE](LICENSE) 文件
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📧 联系
+
+- GitHub: [@mouseroser](https://github.com/mouseroser)
+- OpenClaw Community: [Discord](https://discord.com/invite/clawd)
